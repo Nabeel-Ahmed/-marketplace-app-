@@ -10,6 +10,7 @@ const GET_PRODUCTS = gql`
         name
         description
         price
+        imageUrl
         shop {
           _id
         }
@@ -19,14 +20,21 @@ const GET_PRODUCTS = gql`
 `;
 
 const Home: NextPage = () => {
-  const { data } = useQuery(GET_PRODUCTS);
+  // useEffect(() => {
+  // }, [third])
 
-  console.log("==>", data.getAllProducts.data);
+  const { data, loading } = useQuery(GET_PRODUCTS);
+
+  console.log("=s=>", data?.getAllProducts?.data);
+
+  if (loading) return <p>Loading...</p>;
+
+  // const products = data.getAllProducts.data;
   return (
-    <ProductList
-      // products={data.getAllProducts.data ? data.getAllProducts.data : [1, 2, 3]}
-      products={data.getAllProducts.data}
-    />
+    <>
+      <ProductList products={data.getAllProducts.data} />
+      {/* <ProductList products={[1, 2, 3, 4]} /> */}
+    </>
   );
 };
 

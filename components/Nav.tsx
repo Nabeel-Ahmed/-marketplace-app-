@@ -1,10 +1,13 @@
 import Link from "next/link";
 
+import { useUser } from "@auth0/nextjs-auth0";
+
 const navLinkStyle = `cursor-pointer inline-flex items-center px-1 pt-1 text-gray-500 hover:text-indigo-400`;
 
 const iconButtonStyle = `flex bg-white p-2 rounded-full text-gray-400 hover:text-indigo-400 border-2 border-gray-500 hover:border-indigo-400`;
 
 export default function Nav() {
+  const { user, isLoading } = useUser();
   return (
     <nav className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4">
@@ -37,6 +40,34 @@ export default function Nav() {
                 {` ${3} Item(s)`}
               </button>
             </Link>
+            {!user ? (
+              <a
+                href="api/auth/login"
+                className="rounded-md border bg-purple-100 px-2 py-3 mmr-2 ml-2"
+              >
+                login as vendor
+              </a>
+            ) : (
+              <>
+                <img
+                  src={user.picture}
+                  className="rounded-full w-8 h-8 mr-2 ml-2"
+                />
+                <span className="ml-2 mr-2">{user.name} </span>
+                <a
+                  href="/manage-shops"
+                  className="rounded-md border bg-purple-100 px-2 py-3 mmr-2 ml-2"
+                >
+                  Manage Shops
+                </a>
+                <a
+                  href="/api/auth/logout"
+                  className="rounded-md border bg-purple-100 px-2 py-3 mmr-2 ml-2"
+                >
+                  Logout
+                </a>
+              </>
+            )}
           </div>
         </div>
       </div>
